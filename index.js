@@ -2,7 +2,8 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const db = require("quick.db");
-const { config, token } = require("./config.json");
+const config = require("./config.json");
+const { token } = require("./token.json");
 const client = new Discord.Client({
   intents: [Discord.Intents.FLAGS.GUILDS],
 });
@@ -24,6 +25,7 @@ const loadCommands = (dir = "./commands/") => {
 
       if (pull.name) {
         client.commands.set(pull.name, pull);
+        client.log('[COMMAND]'.green, `Loaded command ${pull.name}`);
       } else {
         continue;
       }
@@ -44,6 +46,7 @@ const loadEvents = (dir = "./events/") => {
       const evt = require(`${dir}/${dirs}/${event}`);
       const evtName = event.split(".")[0];
       client.on(evtName, evt.bind(null, client));
+      client.log('[EVENT]'.green, `Loaded event ${evtName}`);
     }
   });
 }

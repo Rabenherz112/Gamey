@@ -1,0 +1,27 @@
+{
+    "logchannel": "logchannelid",
+    "subreddits": ["FreeGameFindings"],
+    "lookuptime": "300",
+    "limit" : "15",
+    "colors" : {
+        "EpicGames" : "0x00FF00",
+        "Steam" : "0xFF0000",
+        "GOG" : "0x0000FF",
+        "Origin" : "0x000000",
+        "Uplay" : "0x00FFFF",
+        "HumbleBundle" : "0xFF00FF",
+        "ich.io" : "0xFFFF00",
+        "Other" : "0xFFFFFF",
+        "Embed_Default" : "0x000000",
+        "Embed_Error" : "0xFF0000",
+        "Embed_Success" : "0x00FF00",
+        "Embed_Info" : "0x0000FF",
+        "Embed_Warning" : "0xFFFF00"
+    },
+    "Embed" : {
+        "Footer" : "FreeGameFindings",
+        "Footer_Icon" : "https://i.imgur.com/4ZQZQ0F.png",
+        "Footer Log " : "FreeGameFindings",
+        "Footer_Icon_Log" : "https://i.imgur.com/4ZQZQ0F.png"
+    }
+}
