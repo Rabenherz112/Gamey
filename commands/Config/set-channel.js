@@ -1,22 +1,24 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder } = require("discord.js");
 const { colors, Embed } = require("../../config.json");
-const db = require("quick.db");
+const { ChannelType } = require("discord-api-types/v10");
+
+const data = new SlashCommandBuilder()
+  .setName("set-channel")
+  .setDescription("Set the channel for the bot to send the notifications to")
+  .addChannelOption((option) =>
+    option
+      .setName("channel")
+      .setDescription("The channel to send the notifications to")
+      .setRequired(true)
+      .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
+  );
 
 module.exports = {
-    name: "set-channel",
-    description: "Set the channel for the bot to send the notifications to",
-    options: [
-        {
-            name: "channel",
-            description: "The channel to send the notifications to",
-            type: "CHANNEL",
-            channelTypes: ["GUILD_TEXT", "GUILD_NEWS"],
-            required: true,
-        },
-    ],
+  data,
+  name: "set-channel",
 
-    async execute(interaction) {
+  async execute(client, interaction) {
     // Check if User has Administator Permission else return
     if (!interaction.member.permissions.has("ADMINISTRATOR")) {
       return interaction.reply({
@@ -27,23 +29,26 @@ module.exports = {
     // Get Channel of the Interaction
     let channel = interaction.options.getChannel("channel");
     // Set the Channel in the Database
-    await db.set(`${interaction.guild.id}`, {
+    await client.db.set(`${interaction.guild.id}`, {
       feedChannel: channel.id,
       feedChannelType: channel.type,
     });
     // Send Success Message
     let embed = new EmbedBuilder()
-      .setTitel(`${channel.name} is now the feed channel`)
+      .setTitle(`${channel.name} is now the feed channel`)
       .setDescription(
         `New Free Games will be posted in ${channel}.\nYou can change the channe again with /set-channel`
       )
       .setColor(colors.Embed_Success)
       .setTimestamp()
-      .setAuthor(
-        interaction.user.tag,
-        interaction.user.displayAvatarURL({ dynamic: true })
-      )
-      .setFooter(`${Embed.Footer}`, `${Embed.Footer_Icon}`);
+      .setAuthor({
+        name: interaction.user.username,
+        iconURL: interaction.user.avatarURL(),
+      })
+      .setFooter({
+        text: Embed.Footer,
+        iconURL: Embed.Icon,
+      });
     return interaction.reply({ embeds: [embed] });
   },
 };
