@@ -22,6 +22,7 @@
         "Footer" : "FreeGameFindings",
         "Footer_Icon" : "https://i.imgur.com/4ZQZQ0F.png",
         "Footer Log " : "FreeGameFindings",
-        "Footer_Icon_Log" : "https://i.imgur.com/4ZQZQ0F.png"
+        "Footer_Icon_Log" : "https://i.imgur.com/4ZQZQ0F.png",
+        "Thumbnail_Default" : "https://i.imgur.com/4ZQZQ0F.png"
     }
 }

@@ -1,13 +1,29 @@
 // Basic Setup
-const Discord = require("discord.js");
+const { Client, Collection, GatewayIntentBits } = require("discord.js");
 const fs = require("fs");
-const db = require("quick.db");
+const { QuickDB } = require("quick.db");
+const db = new QuickDB();
 const config = require("./config.json");
 const { token } = require("./token.json");
-const client = new Discord.Client({
-  intents: [Discord.Intents.FLAGS.GUILDS],
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds],
 });
 
+// Database Handler
+async function initDB() {
+  //const posts = await new_posts.newPosts(10);
+  //await db.set("lastPost", { "id": posts[0].id, "time": posts[0].time });
+
+  const guilds = client.guilds.cache.map(guild => guild.id);
+  for (const guild of guilds) {
+      const dbGuild = await db.get(`${guild}`);
+      // If the guild is not in the database, add it
+      if (!dbGuild) {
+          await db.set(`${guild}`, { "feedChannel": null }, { "feedChannelType": null });
+      };
+  };
+};
+initDB();
 
 // Collection for Commands
 const commands = [];
@@ -25,7 +41,7 @@ const loadCommands = (dir = "./commands/") => {
 
       if (pull.name) {
         client.commands.set(pull.name, pull);
-        client.log('[COMMAND]'.green, `Loaded command ${pull.name}`);
+        console.log("[COMMAND]", `Loaded command ${pull.name}`);
       } else {
         continue;
       }
@@ -46,10 +62,10 @@ const loadEvents = (dir = "./events/") => {
       const evt = require(`${dir}/${dirs}/${event}`);
       const evtName = event.split(".")[0];
       client.on(evtName, evt.bind(null, client));
-      client.log('[EVENT]'.green, `Loaded event ${evtName}`);
+      console.log("[EVENT]", `Loaded event ${evtName}`);
     }
   });
-}
+};
 loadEvents();
 
 // Login
