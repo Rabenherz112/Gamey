@@ -18,7 +18,9 @@ module.exports = async (client) => {
         await db.set(
           `${guild}`,
           { feedChannel: null },
-          { feedChannelType: null }
+          { feedChannelType: null },
+          { notificationRole: null },
+          { lastUpdate: null }
         );
       }
     }
