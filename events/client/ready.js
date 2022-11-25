@@ -73,7 +73,8 @@ module.exports = async (client) => {
   })();
 
   // Start checking Reddit
-  let checkReddit = require("../functions/util_checkReddit");
-  checkReddit(client);
+  let util_checkreddit = require("../../functions/util_checkReddit");
+  util_checkreddit.insertClient(client);
+  util_checkreddit.checkReddit(client);
   module.exports = cmds;
 };
