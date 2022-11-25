@@ -1,10 +1,9 @@
 {
     "slashCommandsGlobal": false,
     "guildIDDev" : 843924725931049000,
-    "logchannel": "logchannelid",
     "subreddits": ["FreeGameFindings"],
     "lookuptime": "300",
-    "limit" : "15",
+    "limit" : "25",
     "colors" : {
         "EpicGames" : "0x00FF00",
         "Steam" : "0x2A475E",
@@ -24,8 +23,6 @@
     "Embed" : {
         "Footer" : "Gamey your Free Games Finder",
         "Footer_Icon" : "https://media.discordapp.net/attachments/731166978806644827/887707963849072680/L6.png",
-        "Footer Log " : "Gamey - Log",
-        "Footer_Icon_Log" : "https://media.discordapp.net/attachments/731166978806644827/887707963849072680/L6.png",
         "Thumbnail_Default" : "https://media.discordapp.net/attachments/731166978806644827/1038799292573429840/gamey-game-placeholder.jpg"
     }
 }

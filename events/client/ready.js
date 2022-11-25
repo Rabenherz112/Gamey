@@ -19,9 +19,15 @@ module.exports = async (client) => {
           `${guild}`,
           { feedChannel: null },
           { feedChannelType: null },
-          { notificationRole: null },
-          { lastUpdate: null }
+          { feedRole: null }
         );
+      }
+    }
+    // For each subreddits in the config.json file, add it to the database
+    for (const subreddit of config.subreddits) {
+      const dbSubreddit = await db.get(`${subreddit}`);
+      if (!dbSubreddit) {
+        await db.set(`${subreddit}`, { feedUpdate: null });
       }
     }
   }
@@ -65,5 +71,9 @@ module.exports = async (client) => {
       console.error(error);
     }
   })();
+
+  // Start checking Reddit
+  let checkReddit = require("../functions/util_checkReddit");
+  checkReddit(client);
   module.exports = cmds;
 };

@@ -30,7 +30,9 @@ module.exports = {
     let channel = interaction.options.getChannel("channel");
     // Check if Channel is null if so show the currently set channel
     if (channel === null) {
-      let dbChannel = await client.db.get(`${interaction.guild.id}.feedChannel`);
+      let dbChannel = await client.db.get(
+        `${interaction.guild.id}.feedChannel`
+      );
       if (dbChannel === null) {
         return interaction.reply({
           content: "There is no notifcation channel set yet.",
