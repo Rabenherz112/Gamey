@@ -24,9 +24,23 @@ async function getSubredditData() {
     }
 }
 
+async function getPostsData(){
+    await getSubredditData().then((posts) => {
+        for (let post of posts) {
+            let postDataTitel = post.data.title;
+            let postDataAuthor = post.data.author;
+        }
+        return(postDatas);
+    }
+}
+
 async function sendNotification() {
     // Create a new Embed with Post Data
-
+    let postDatas = await getPostsData()
+    for (let postData of postDatas)
+    {
+        
+    }
     // Check Launcher
     const regex = new RegExp('^\[.*\]');
     if regex.test(postDataTitle)
@@ -35,7 +49,7 @@ async function sendNotification() {
     }
 
     const embed = new EmbedBuilder()
-        .setTitle(postDataTitle)
+        .setTitle(postData.Title)
         .setURL(postDataURL)
         .setDescription(postDataDescription)
         .setColor(postDataColor)
@@ -73,10 +87,6 @@ async function sendNotification() {
             continue;
         }
     }
-}
-
-async function getPostsData(){
-
 }
 
 async function checkReddit(client) {
