@@ -85,7 +85,7 @@ async function getPostsData(allPosts) {
             let postDataSteamDB = postDataBotComment[0].data.body.match(/^.*\[SteamDB\]\((.*)\).*$/gmi);
             let postDataPrice = postDataBotComment[0].data.body.match(/^.*\[Price\]\((.*)\).*$/gmi);
         }*/
-        console.log(`[REDDIT] Found ${postInfos.Title} at ${new Date().toLocaleString()}`);
+        console.log(`[REDDIT] Found ${postDataTitel} at ${new Date().toLocaleString()}`);
         postInfos.push({
             Title: postDataTitel,
             Author: postDataAuthor,
@@ -114,31 +114,6 @@ async function sendNotification(posts) {
                 break;
             case "epic":
                 embedColor = colors.Epic
-                break;
-            case "gog":
-                embedColor = colors.GOG
-                break;
-            case "origin":
-                embedColor = colors.Origin
-                break;
-            case "uplay":
-                embedColor = colors.Uplay
-                break;
-            case "pc":
-                embedColor = colors.PC
-                break;
-            case "xbox":
-            case "xb":
-                embedColor = colors.Xbox
-                break;
-            case "playstation":
-            case "ps":
-            case "ps4":
-            case "ps5":
-                embedColor = colors.Playstation
-                break;
-            case "switch":
-                embedColor = colors.Switch
                 break;
             case "itch.io":
                 embedColor = colors.Itch

@@ -18,8 +18,10 @@ const loadEvents = (dir = "./events/") => {
 
     for (const event of events) {
       const evt = require(`${dir}/${dirs}/${event}`);
+      if(!evt || !evt.autoload)
+      continue;
       const evtName = event.split(".")[0];
-      client.on(evtName, evt.bind(null, client));
+      client.on(evtName, evt[""].bind(null, client));
       console.log("[EVENT]", `Loaded event ${evtName}`);
     }
   });
