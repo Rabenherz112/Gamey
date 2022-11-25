@@ -13,6 +13,8 @@
         "PC" : "0xFF00FF",
         "Itch" : "0xFFFF00",
         "PlayStation" : "0x006fcd",
+        "Xbox" : "0x107c10",
+        "Switch" : "0x7a3d98",
         "Other" : "0x626262",
         "Expired": "0xFF0000",
         "Embed_Default" : "0x9370DB",

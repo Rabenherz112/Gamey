@@ -190,7 +190,7 @@ function insertClient(client2) {
 }
 // Create schedule for checking reddit
 setInterval(() => {
-    if (client != null)
+    if (client == null)
         return;
     checkReddit();
     console.log("[REDDIT] Checked Reddit at " + new Date());
