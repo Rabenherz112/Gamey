@@ -12,11 +12,15 @@ async function getSubredditData() {
         // Get the latest Post from DB and compare it to the latest Post from Reddit
         let feedUpdate = await client.db.get(`${subreddit}.feedUpdate`);
         let posts = json.data.children.filter(
-            (post) => post.data.created_utc > feedUpdate
+            (post) => (post.data.created_utc * 1000) > feedUpdate
         );
         // If there are no new posts, continue with the next subreddit
         if (posts.length === 0) {
             continue;
+        } else {
+            for(let post of posts) {
+                // TODO: Continue here
+            }
         }
         // Set feedUpdate to current time
         await client.db.set(`${subreddit}.feedUpdate`, Date.now());
@@ -31,7 +35,7 @@ async function getPostsData(){
             let postDataAuthor = post.data.author;
         }
         return(postDatas);
-    }
+    });
 }
 
 async function sendNotification() {
@@ -43,8 +47,7 @@ async function sendNotification() {
     }
     // Check Launcher
     const regex = new RegExp('^\[.*\]');
-    if regex.test(postDataTitle)
-    {
+    if (regex.test(postDataTitle)) {
         
     }
 
