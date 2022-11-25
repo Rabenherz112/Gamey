@@ -4,6 +4,7 @@ const { EmbedBuilder } = require("discord.js");
 async function getSubredditData() {
     // TODO Validate and fix 
     // Get all new Posts from Subreddits
+    let allPosts = [];
     for (let subreddit of subreddits) {
         let response = await fetch(
             `https://www.reddit.com/r/${subreddit}/new.json?limit=${limit}`
@@ -15,17 +16,14 @@ async function getSubredditData() {
             (post) => (post.data.created_utc * 1000) > feedUpdate
         );
         // If there are no new posts, continue with the next subreddit
-        if (posts.length === 0) {
-            continue;
-        } else {
-            for(let post of posts) {
-                // TODO: Continue here
-            }
-        }
         // Set feedUpdate to current time
         await client.db.set(`${subreddit}.feedUpdate`, Date.now());
-        return(posts);
+        if (posts.length === 0) {
+            continue;
+        }
+        allPosts.push(posts);
     }
+    return allPosts;
 }
 
 async function getPostsData(){
