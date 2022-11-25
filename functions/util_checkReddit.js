@@ -15,7 +15,6 @@ async function getSubredditData() {
         let posts = json.data.children.filter(
             (post) => (post.data.created_utc * 1000) > feedUpdate
         );
-        // If there are no new posts, continue with the next subreddit
         // Set feedUpdate to current time
         await client.db.set(`${subreddit}.feedUpdate`, Date.now());
         if (posts.length === 0) {
@@ -27,12 +26,25 @@ async function getSubredditData() {
 }
 
 async function getPostsData(){
-    await getSubredditData().then((posts) => {
-        for (let post of posts) {
+    let postInfos = []
+    await getSubredditData().then((allPosts) => {
+        for (let post of allPosts) {
             let postDataTitel = post.data.title;
-            let postDataAuthor = post.data.author;
+            let postDataAuthor = post.data.name;
+            let postDataDescription = post.data.description;
+            let postDataAuthorFull = post.data.author_fullname;
+            let postDataUpvotes = post.data.upvote_ratio;
+            let postDataUrl = post.data.url;
+            postInfos.push({
+                Title: postDataTitel,
+                Author: postDataAuthor,
+                Description: postDataDescription,
+                Author_Full: postDataAuthorFull,
+                Upvotes: postDataUpvotes,
+                URL: postDataUrl,
+            });
         }
-        return(postDatas);
+        return(postInfos);
     });
 }
 
