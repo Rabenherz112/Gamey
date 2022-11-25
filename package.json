@@ -28,6 +28,7 @@
     "discord-api-types": "^0.37.20",
     "discord.js": "^14.6.0",
     "fs": "^0.0.1-security",
+    "html-entities": "^2.3.3",
     "quick.db": "^9.0.6"
   }
 }

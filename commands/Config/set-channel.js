@@ -28,11 +28,12 @@ module.exports = {
     }
     // Get Channel of the Interaction
     let channel = interaction.options.getChannel("channel");
+    let dbGuild = await client.db.get(
+      `${interaction.guild.id}`
+    );
     // Check if Channel is null if so show the currently set channel
     if (channel === null) {
-      let dbChannel = await client.db.get(
-        `${interaction.guild.id}.feedChannel`
-      );
+      let dbChannel = dbGuild.feedChannel;
       if (dbChannel === null) {
         return interaction.reply({
           content: "There is no notifcation channel set yet.",
@@ -46,10 +47,9 @@ module.exports = {
       });
     }
     // Set the Channel in the Database
-    await client.db.set(`${interaction.guild.id}`, {
-      feedChannel: channel.id,
-      feedChannelType: channel.type,
-    });
+    dbGuild.feedChannel = channel.id;
+    dbGuild.feedChannelType = channel.type;
+    await client.db.set(`${interaction.guild.id}`, dbGuild);
     // Send Success Message
     let embed = new EmbedBuilder()
       .setTitle(`${channel.name} is now the feed channel`)

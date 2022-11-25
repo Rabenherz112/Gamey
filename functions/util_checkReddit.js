@@ -1,6 +1,7 @@
 const { subreddits, lookuptime, limit, Embed, colors } = require("../config.json");
 const { EmbedBuilder } = require("discord.js");
 const { ChannelType } = require("discord-api-types/v10");
+const { decode } = require("html-entities");
 
 async function getSubredditData() {
     // Get all new Posts from Subreddits
@@ -20,7 +21,7 @@ async function getSubredditData() {
         if (posts.length === 0) {
             continue;
         }
-        allPosts.push(posts);
+        allPosts.push(...posts);
     }
     return allPosts;
 }
@@ -42,53 +43,69 @@ async function getRedditUser(user) {
         `https://www.reddit.com/user/${user}/about.json`
     );
     let json = await response.json();
-    let profilePicture = json.data.icon_img;
+    let profilePicture = json.data.subreddit.icon_img;
+    profilePicture = profilePicture.split("?")[0];
     return profilePicture;
 }
 
-async function getPostsData() {
+async function getPostsData(allPosts) {
     let postInfos = []
-    return await getSubredditData().then(async (allPosts) => {
-        for (let post of allPosts) {
-            let postDataTitel = post.data.title;
-            let postDataAuthor = post.data.name;
-            let postDataDescription = post.data.description;
-            let postDataAuthorFull = post.data.author_fullname;
-            let postDataAuthorImage = await getRedditUser(postDataAuthor);
-            let postDataUpvotes = post.data.upvote_ratio;
-            let postDataUrl = post.data.url;
-            let postDataId = post.data.id;
-            let subreddit = post.data.subreddit;
-            let postDataLauncher = post.data.title.match(/^\[([a-zA-Z0-9 \.]+)(?:[\/, ]*[a-zA-Z0-9\. ]*)*\]+.*$/gmi);
-            if (postDataLauncer.length > 0) {
-                postDataLauncher = postDataLauncher[0]
-            } else {
-                postDataLauncher = "unknown"
-            }
-            /*let postDataBotComment = await getSubredditComments(subreddit, postDataId);
-            if (postDataBotComment.length >= 1) {
-                let postDataStorePage = postDataBotComment[0].data.body.match(/^.*\[Store Page\]\((.*)\).*$/gmi);
-                let postDataSteamDB = postDataBotComment[0].data.body.match(/^.*\[SteamDB\]\((.*)\).*$/gmi);
-                let postDataPrice = postDataBotComment[0].data.body.match(/^.*\[Price\]\((.*)\).*$/gmi);
-            }*/
-            postInfos.push({
-                Title: postDataTitel,
-                Author: postDataAuthor,
-                Author_Image: postDataAuthorImage,
-                Description: postDataDescription,
-                Author_Full: postDataAuthorFull,
-                Upvotes: postDataUpvotes,
-                URL: postDataUrl,
-                Lauchner: postDataLauncher,
-            });
+    for (let post of allPosts) {
+        let postDataTitel = post.data.title;
+        let postDataAuthor = post.data.author;
+        let postDataDescription = post.data.selftext;
+        if (postDataDescription.length > 2048) {
+            postDataDescription = postDataDescription.substring(0, 2045) + "...";
         }
-        return postInfos;
-    });
+        if (postDataDescription == "") {
+            postDataDescription = "No Description available";
+        }
+        postDataDescription = decode(postDataDescription);
+        let postDataThumbnail = post.data.thumbnail;
+        if (postDataThumbnail == "default" || postDataThumbnail == "self" || postDataThumbnail == "nsfw") {
+            postDataThumbnail = Embed.Thumbnail_Default;
+        }
+        let postDataAuthorFull = post.data.author_fullname;
+        let postDataAuthorImage = await getRedditUser(postDataAuthor);
+        let postDataUpvotes = post.data.upvote_ratio;
+        let postDataCommentCount = post.data.num_comments;
+        let postDataScore = post.data.score;
+        let postDataUrl = post.data.url;
+        let postDataId = post.data.id;
+        let subreddit = post.data.subreddit;
+        let postDataLauncher = post.data.title.match(/^\[([a-zA-Z0-9 \.]+)(?:[\/, ]*[a-zA-Z0-9\. ]*)*\]+.*$/i);
+        if (postDataLauncher.length > 1) {
+            postDataLauncher = postDataLauncher[1]
+        } else {
+            postDataLauncher = "unknown"
+        }
+        /*let postDataBotComment = await getSubredditComments(subreddit, postDataId);
+        if (postDataBotComment.length >= 1) {
+            let postDataStorePage = postDataBotComment[0].data.body.match(/^.*\[Store Page\]\((.*)\).*$/gmi);
+            let postDataSteamDB = postDataBotComment[0].data.body.match(/^.*\[SteamDB\]\((.*)\).*$/gmi);
+            let postDataPrice = postDataBotComment[0].data.body.match(/^.*\[Price\]\((.*)\).*$/gmi);
+        }*/
+        console.log(`[REDDIT] Found ${postInfos.Title} at ${new Date().toLocaleString()}`);
+        postInfos.push({
+            Title: postDataTitel,
+            Author: postDataAuthor,
+            Author_Image: postDataAuthorImage,
+            Thumbnail: postDataThumbnail,
+            Description: postDataDescription,
+            Author_Full: postDataAuthorFull,
+            Upvotes: postDataUpvotes,
+            CommentCount: postDataCommentCount,
+            Score: postDataScore,
+            URL: postDataUrl,
+            Launcher: postDataLauncher,
+        });
+    }
+    return postInfos;
 }
 
-async function sendNotification() {
+async function sendNotification(posts) {
     // Create a new Embed with Post Data
-    let postInfos = await getPostsData()
+    let postInfos = await getPostsData(posts)
     for (let postInfo of postInfos) {
         let embedColor
         switch (postInfo.Launcher.toLowerCase()) {
@@ -134,50 +151,85 @@ async function sendNotification() {
                 break;
         }
         let embed = new EmbedBuilder()
-            .setTitle(`${postInfo.Lauchner} ${postInfo.Title}`)
-            .setDescription(`Hey there, I found a new free game for you!\n\n${postInfo.Description}`)
-            .setFields(["Free Game Link (Click me)"](postInfo.URL))
+            .setTitle(`${postInfo.Title}`)
+            .setDescription(`${postInfo.Description}`)
+            .setFields(
+            {
+                name: "Comments",
+                value: `${postInfo.CommentCount}`,
+                inline: true 
+            },
+            {
+                name: "Upvote Ratio",
+                value: `${postInfo.Upvotes}`,
+                inline: true 
+            },
+            {
+                name: "Score",
+                value: `${postInfo.Score}`,
+                inline: true 
+            },
+            {
+                name: "Free Game Link",
+                value: `[Click me](${postInfo.URL})`,
+                inline: false 
+            },)
+            .setThumbnail(postInfo.Thumbnail)
             .setURL(postInfo.URL)
             .setColor(embedColor)
-            .setAuthor(postInfo.Author, postInfo.Author_Image, `https://www.reddit.com/user/${postInfo.Author}`)
-            .setFooter(Embed.Footer, Embed.Footer_Image)
+            .setAuthor({
+                name: postInfo.Author,
+                iconURL: postInfo.Author_Image,
+                url: `https://www.reddit.com/user/${postInfo.Author}`
+            })
+            .setFooter({
+                text: Embed.Footer,
+                iconURL: Embed.Footer_Image
+            })
             .setTimestamp()
 
         // Send Embed to all Guilds
-        for (let guild of client.guilds.cache) {
-            let feedRole = await client.db.get(`${guild.id}.feedRole`);
-            let feedChannel = await client.db.get(`${guild.id}.feedChannel`);
-            let feedChannelType = await client.db.get(`${guild.id}.feedChannelType`);
-            if (feedChannel != null) {
-                let channel = client.channels.cache.get(feedChannel);
-                if (feedChannelType === ChannelType.GuildAnnouncement) {
-                    if (feedRole != null) {
-                        channel.send({
-                            content: `<@&${feedRole}>`,
-                            embeds: [embed],
-                        }).crosspost();
+        for (let guild of client.guilds.cache.values()) {
+            try {
+                let feedRole = await client.db.get(`${guild.id}.feedRole`);
+                let feedChannel = await client.db.get(`${guild.id}.feedChannel`);
+                let feedChannelType = await client.db.get(`${guild.id}.feedChannelType`);
+                if (feedChannel != null) {
+                    let channel = client.channels.cache.get(feedChannel);
+                    if (feedChannelType === ChannelType.GuildAnnouncement) {
+                        if (feedRole != null) {
+                            let message = await channel.send({
+                                content: `<@&${feedRole}>`,
+                                embeds: [embed],
+                            })
+                            message.crosspost();
+                        } else {
+                            let message = await channel.send({ embeds: [embed] });
+                            message.crosspost();
+                        }
                     } else {
-                        channel.send({ embeds: [embed] }).crosspost();
+                        if (feedRole != null) {
+                            channel.send({
+                                content: `<@&${feedRole}>`,
+                                embeds: [embed],
+                            });
+                        } else {
+                            channel.send({ embeds: [embed] });
+                        }
                     }
+                } else {
+                    continue;
                 }
-                else {
-                    if (feedRole != null) {
-                        channel.send({
-                            content: `<@&${feedRole}>`,
-                            embeds: [embed],
-                        });
-                    } else {
-                        channel.send({ embeds: [embed] });
-                    }
-                }
-            } else {
-                continue;
+            } catch (e) {
+                // Oops, I don't care
             }
         }
     }
 }
 
 async function checkReddit() {
+    if (client == null)
+        return;
     // Get Subreddit Data
     let posts = await getSubredditData();
     // Send Notification
@@ -188,13 +240,8 @@ let client = null;
 function insertClient(client2) {
     client = client2;
 }
+
 // Create schedule for checking reddit
-setInterval(() => {
-    if (client == null)
-        return;
-    checkReddit();
-    console.log("[REDDIT] Checked Reddit at " + new Date());
-}
-    , lookuptime);
+setInterval(checkReddit, lookuptime);
 
 module.exports = { checkReddit, insertClient };

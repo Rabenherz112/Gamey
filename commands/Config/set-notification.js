@@ -26,11 +26,12 @@ module.exports = {
     }
     // Get Role of the Interaction
     let role = interaction.options.getRole("role");
+    let dbGuild = await client.db.get(
+      `${interaction.guild.id}`
+    );
     // Check if Role is null if so show the currently set role
     if (role === null) {
-        let dbRole = await client.db.get(
-          `${interaction.guild.id}.feedRole`
-        );
+        let dbRole = dbGuild.feedRole;
         // FIXME
         if (dbRole === null) {
           return interaction.reply({
@@ -45,9 +46,8 @@ module.exports = {
         });
       }
     // Set the Role in the Database
-    await client.db.set(`${interaction.guild.id}`, {
-      feedRole: role.id,
-    });
+    dbGuild.feedRole = role.id;
+    await client.db.set(`${interaction.guild.id}`, dbGuild);
     // Send Success Message
     let embed = new EmbedBuilder()
       .setTitle(`${role.name} is now the feed role`)
