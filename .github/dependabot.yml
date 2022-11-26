@@ -20,22 +20,3 @@ updates:
       prefix: "npm"
       include: "scope"
     versioning-strategy: "increase"
-  # GitHub Actions Update Check
-   - package-ecosystem: "github-actions"
-    # Check default github actions directory
-    directory: ".github/workflows"
-    schedule:
-      interval: "weekly"
-      day: "saturday"
-      time: "07:00"
-      timezone: "Europe/Berlin"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "rabenherz112"
-    labels:
-      - "dependencies"
-      - "github-actions"
-    commit-message:
-      prefix: "github-actions"
-      include: "scope"
-    versioning-strategy: "increase"
