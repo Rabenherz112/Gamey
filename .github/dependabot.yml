@@ -1,0 +1,22 @@
+version: 2
+# NPM Update Check
+updates:
+  # NPM Update Check
+  - package-ecosystem: "npm"
+    # Check in root Directory
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+      time: "07:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 15
+    reviewers:
+      - "rabenherz112"
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "npm"
+      include: "scope"
+    versioning-strategy: "increase"
