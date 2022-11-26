@@ -39,4 +39,3 @@ updates:
       prefix: "github-actions"
       include: "scope"
     versioning-strategy: "increase"
-    
