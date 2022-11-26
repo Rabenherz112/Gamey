@@ -51,9 +51,12 @@ async function getRedditUser(user) {
 async function getPostsData(allPosts) {
     let postInfos = []
     for (let post of allPosts) {
-        let postDataTitel = post.data.title;
+        let postDataTitel = decode(post.data.title);
         let postDataAuthor = post.data.author;
         let postDataDescription = post.data.selftext;
+
+        console.log(`[REDDIT] Found ${postDataTitel} at ${new Date().toLocaleString()}`);
+
         if (postDataDescription.length > 2048) {
             postDataDescription = postDataDescription.substring(0, 2045) + "...";
         }
@@ -73,7 +76,7 @@ async function getPostsData(allPosts) {
         let postDataUrl = post.data.url;
         let postDataId = post.data.id;
         let subreddit = post.data.subreddit;
-        let postDataLauncher = post.data.title.match(/^\[([a-zA-Z0-9 \.]+)(?:[\/, ]*[a-zA-Z0-9\. ]*)*\]+.*$/i);
+        let postDataLauncher = post.data.title.match(/^\[([a-zA-Z0-9 \.]+)(?:[\/, ]*[a-zA-Z0-9\. ]*)*\]+.*$/mi);
         if (postDataLauncher.length > 1) {
             postDataLauncher = postDataLauncher[1]
         } else {
@@ -85,7 +88,6 @@ async function getPostsData(allPosts) {
             let postDataSteamDB = postDataBotComment[0].data.body.match(/^.*\[SteamDB\]\((.*)\).*$/gmi);
             let postDataPrice = postDataBotComment[0].data.body.match(/^.*\[Price\]\((.*)\).*$/gmi);
         }*/
-        console.log(`[REDDIT] Found ${postDataTitel} at ${new Date().toLocaleString()}`);
         postInfos.push({
             Title: postDataTitel,
             Author: postDataAuthor,
