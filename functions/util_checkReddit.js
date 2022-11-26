@@ -77,7 +77,8 @@ async function getPostsData(allPosts) {
         let postDataId = post.data.id;
         let subreddit = post.data.subreddit;
         let postDataLauncher = post.data.title.match(/^\[([a-zA-Z0-9 \.]+)(?:[\/, ]*[a-zA-Z0-9\. ]*)*\]+.*$/mi);
-        if (typeof postDataLauncher == Array && postDataLauncher.length > 1) {
+        // Why is postDataLauncher an object and not an array?
+        if (typeof postDataLauncher === 'object' && postDataLauncher.length > 1) {
             postDataLauncher = postDataLauncher[1]
         } else {
             postDataLauncher = "unknown"
