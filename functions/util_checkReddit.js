@@ -77,7 +77,7 @@ async function getPostsData(allPosts) {
         let postDataId = post.data.id;
         let subreddit = post.data.subreddit;
         let postDataLauncher = post.data.title.match(/^\[([a-zA-Z0-9 \.]+)(?:[\/, ]*[a-zA-Z0-9\. ]*)*\]+.*$/mi);
-        if (postDataLauncher.length > 1) {
+        if (typeof postDataLauncher == Array && postDataLauncher.length > 1) {
             postDataLauncher = postDataLauncher[1]
         } else {
             postDataLauncher = "unknown"
