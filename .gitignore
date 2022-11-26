@@ -2,3 +2,4 @@
 token.json
 package-lock.json
 json.sqlite
+json.sqlite-journal
