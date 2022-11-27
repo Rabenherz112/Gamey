@@ -19,6 +19,20 @@ module.exports = {
         To get started use the command \`/set-channel\` to set the channel where the bot will post the free games. If you want to recieve a ping for every new free game use \`/set-notification\`.\n\n
         After this is done, you will need to wait, until somebody finds a new free game and posts about it in Reddit.`
       )
+      .setFields(
+        {
+          name: "Support Server",
+          value: "[Click here](https://discord.gg/ySk5eYrrjG)"
+        },
+        {
+          name: "Invite",
+          value: "[Click here](https://discord.com/api/oauth2/authorize?client_id=918571056791453726&permissions=139586914304&scope=bot)"
+        },
+        {
+          name: "Source Code",
+          value: "[Click here](https://github.com/Rabenherz112/Gamey)"
+        }
+      )
       .setColor(colors.Embed_Info)
       .setTimestamp()
       .setAuthor({
