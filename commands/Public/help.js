@@ -11,7 +11,6 @@ module.exports = {
   name: "help",
 
   async execute(client, interaction) {
-    // Create and send a new Embed
     let embed = new EmbedBuilder()
       .setTitle("Gamey - Your free Game Finder")
       .setDescription(
