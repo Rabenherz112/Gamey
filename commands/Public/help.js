@@ -21,15 +21,18 @@ module.exports = {
       .setFields(
         {
           name: "Support Server",
-          value: "[Click here](https://discord.gg/ySk5eYrrjG)"
+          value: "[Click here](https://discord.gg/ySk5eYrrjG)",
+          inline: true
         },
         {
           name: "Invite",
-          value: "[Click here](https://discord.com/api/oauth2/authorize?client_id=918571056791453726&permissions=139586914304&scope=bot)"
+          value: "[Click here](https://discord.com/api/oauth2/authorize?client_id=918571056791453726&permissions=139586914304&scope=bot)",
+          inline: true
         },
         {
           name: "Source Code",
-          value: "[Click here](https://github.com/Rabenherz112/Gamey)"
+          value: "[Click here](https://github.com/Rabenherz112/Gamey)",
+          inline: true
         }
       )
       .setColor(colors.Embed_Info)
