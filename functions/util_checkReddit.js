@@ -151,7 +151,7 @@ async function sendNotification(posts) {
                 name: "Free Game Link",
                 value: `[Click me](${postInfo.URL})`,
                 inline: false 
-            },)
+            })
             .setThumbnail(postInfo.Thumbnail)
             .setURL(postInfo.URL)
             .setColor(embedColor)
