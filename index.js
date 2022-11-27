@@ -1,9 +1,6 @@
 // Basic Setup
-const { Client, Collection, GatewayIntentBits } = require("discord.js");
+const { Client, GatewayIntentBits } = require("discord.js");
 const fs = require("fs");
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const config = require("./config.json");
 const { token } = require("./token.json");
 const client = new Client({
   intents: [GatewayIntentBits.Guilds],
