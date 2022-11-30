@@ -18,8 +18,8 @@
         "Embed_Warning" : "0xFFFF00"
     },
     "Embed" : {
-        "Footer" : "Gamey your Free Games Finder",
-        "Footer_Icon" : "https://media.discordapp.net/attachments/731166978806644827/887707963849072680/L6.png",
-        "Thumbnail_Default" : "https://media.discordapp.net/attachments/731166978806644827/1038799292573429840/gamey-game-placeholder.jpg"
+        "Footer" : "Gamey your free Games Finder",
+        "Footer_Icon" : "https://media.discordapp.net/attachments/731166978806644827/1047599469610418227/Gamey_LogoTransparent.png",
+        "Thumbnail_Default" : "https://media.discordapp.net/attachments/731166978806644827/1047599468566036521/Gamey_BannerOnly.png"
     }
 }
