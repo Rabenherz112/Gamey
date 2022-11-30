@@ -3,7 +3,7 @@
     "guildIDDev" : 843924725931049000,
     "subreddits": ["FreeGameFindings","Freegamestuff"],
 
-    "lookuptime": "5",
+    "lookuptime": "30",
     "limit" : "25",
     "colors" : {
         "Epic" : "0x2b292a",
