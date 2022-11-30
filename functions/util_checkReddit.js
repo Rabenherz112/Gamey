@@ -81,6 +81,8 @@ async function getPostsData(allPosts) {
             continue;
         let postDataId = post.data.id;
         let subreddit = post.data.subreddit;
+        // Check for UTC Time
+        let postDataTime = post.data.created_utc.match(/^([^.]+)/mi);
         // Check for Launcher
         let postDataLauncher = post.data.title.match(/^\[([a-zA-Z0-9 \.]+)(?:[\/, ]*[a-zA-Z0-9\. ]*)*\]+.*$/mi);
         if (typeof postDataLauncher === 'object' && postDataLauncher.length > 1) {
@@ -103,6 +105,7 @@ async function getPostsData(allPosts) {
             Author_Full: postDataAuthorFull,
             Upvotes: postDataUpvotes,
             CommentCount: postDataCommentCount,
+            CreationDate: postDataTime,
             Score: postDataScore,
             URL: postDataUrl,
             Launcher: postDataLauncher,
@@ -137,6 +140,11 @@ async function sendNotification(posts) {
             .setTitle(`${postInfo.Title}`)
             .setDescription(`${postInfo.Description}`)
             .setFields(
+                {
+                    name: "Post Time (UTC)",
+                    value: `<t:${postInfo.CreationDate}:f>`,
+                    inline: true
+                },
                 {
                     name: "Comments",
                     value: `${postInfo.CommentCount}`,
