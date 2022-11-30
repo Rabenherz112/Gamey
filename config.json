@@ -1,15 +1,16 @@
 {
     "slashCommandsGlobal": true,
     "guildIDDev" : 843924725931049000,
-    "subreddits": ["FreeGameFindings"],
-    "lookuptime": "300000",
+    "subreddits": ["FreeGameFindings","Freegamestuff"],
+
+    "lookuptime": "30",
     "limit" : "25",
     "colors" : {
-        "Epic" : "0x121212",
-        "Steam" : "0x299ad5",
-        "Itch" : "0x3aedc8",
-        "Other" : "0x626262",
-        "Expired": "0xFF0000",
+        "Epic" : "0x2b292a",
+        "Steam" : "0x021444",
+        "Itch" : "0f25756",
+        "Other" : "000bc22",
+        "Expired": "0x333333",
         "Embed_Default" : "0x9370DB",
         "Embed_Error" : "0xFF0000",
         "Embed_Success" : "0x008000",
@@ -17,8 +18,8 @@
         "Embed_Warning" : "0xFFFF00"
     },
     "Embed" : {
-        "Footer" : "Gamey your Free Games Finder",
-        "Footer_Icon" : "https://media.discordapp.net/attachments/731166978806644827/887707963849072680/L6.png",
-        "Thumbnail_Default" : "https://media.discordapp.net/attachments/731166978806644827/1038799292573429840/gamey-game-placeholder.jpg"
+        "Footer" : "Gamey your free Games Finder",
+        "Footer_Icon" : "https://media.discordapp.net/attachments/731166978806644827/1047599469610418227/Gamey_LogoTransparent.png",
+        "Thumbnail_Default" : "https://media.discordapp.net/attachments/731166978806644827/1047599468566036521/Gamey_BannerOnly.png"
     }
 }
