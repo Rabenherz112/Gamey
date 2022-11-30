@@ -1,8 +1,9 @@
 {
     "slashCommandsGlobal": true,
     "guildIDDev" : 843924725931049000,
-    "subreddits": ["FreeGameFindings"],
-    "lookuptime": "300000",
+    "subreddits": ["FreeGameFindings","Freegamestuff"],
+
+    "lookuptime": "5",
     "limit" : "25",
     "colors" : {
         "Epic" : "0x121212",
