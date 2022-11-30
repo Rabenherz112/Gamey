@@ -76,6 +76,7 @@ async function getPostsData(allPosts) {
         let postDataCommentCount = post.data.num_comments;
         let postDataScore = post.data.score;
         let postDataUrl = post.data.url;
+        let postDataUrlPost = `https://www.reddit.com${post.data.permalink}`;
         let postDataCreationTime = Math.floor(post.data.created_utc);
         // Check if it is a Giveaway and if so don't send it
         if (postDataUrl.toLowerCase().includes("gleam.io"))
@@ -106,6 +107,7 @@ async function getPostsData(allPosts) {
             CommentCount: postDataCommentCount,
             Score: postDataScore,
             URL: postDataUrl,
+            URL_Post: postDataUrlPost,
             CreationTime: postDataCreationTime,
             Launcher: postDataLauncher,
         });
@@ -165,7 +167,7 @@ async function sendNotification(posts) {
                     inline: false
                 })
             .setThumbnail(postInfo.Thumbnail)
-            .setURL(postInfo.URL)
+            .setURL(postInfo.URL_Post)
             .setColor(embedColor)
             .setAuthor({
                 name: postInfo.Author,
@@ -232,6 +234,6 @@ function insertClient(client2) {
 }
 
 // Create schedule for checking reddit
-setInterval(checkReddit, lookuptime*60000);
+setInterval(checkReddit, lookuptime * 60000);
 
 module.exports = { checkReddit, insertClient };

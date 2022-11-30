@@ -4,7 +4,7 @@
     "subreddits": ["FreeGameFindings","Freegamestuff"],
 
     "lookuptime": "30",
-    "limit" : "25",
+    "limit" : "7",
     "colors" : {
         "Epic" : "0x2b292a",
         "Steam" : "0x021444",
