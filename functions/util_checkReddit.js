@@ -76,6 +76,7 @@ async function getPostsData(allPosts) {
         let postDataCommentCount = post.data.num_comments;
         let postDataScore = post.data.score;
         let postDataUrl = post.data.url;
+        let postDataCreationTime = Math.floor(post.data.created_utc);
         // Check if it is a Giveaway and if so don't send it
         if (postDataUrl.toLowerCase().includes("gleam.io"))
             continue;
@@ -83,7 +84,7 @@ async function getPostsData(allPosts) {
         let subreddit = post.data.subreddit;
         // Check for Launcher
         let postDataLauncher = post.data.title.match(/^\[([a-zA-Z0-9 \.]+)(?:[\/, ]*[a-zA-Z0-9\. ]*)*\]+.*$/mi);
-        if (typeof postDataLauncher === 'object' && postDataLauncher.length > 1) {
+        if (postDataLauncher != null && typeof postDataLauncher === 'object' && postDataLauncher.length > 1) {
             postDataLauncher = postDataLauncher[1]
         } else {
             postDataLauncher = "unknown"
@@ -105,6 +106,7 @@ async function getPostsData(allPosts) {
             CommentCount: postDataCommentCount,
             Score: postDataScore,
             URL: postDataUrl,
+            CreationTime: postDataCreationTime,
             Launcher: postDataLauncher,
         });
     }
@@ -137,6 +139,11 @@ async function sendNotification(posts) {
             .setTitle(`${postInfo.Title}`)
             .setDescription(`${postInfo.Description}`)
             .setFields(
+                {
+                    name: "Date (UTC)",
+                    value: `<t:${postInfo.CreationTime}:f>`,
+                    inline: true
+                },
                 {
                     name: "Comments",
                     value: `${postInfo.CommentCount}`,
