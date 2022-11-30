@@ -56,14 +56,16 @@ async function getPostsData(allPosts) {
         let postDataDescription = post.data.selftext;
 
         console.log(`[REDDIT] Found ${postDataTitel} at ${new Date().toLocaleString()}`);
-
+        // Limit Description to 2048 Characters (Discord Limit)
         if (postDataDescription.length > 2048) {
             postDataDescription = postDataDescription.substring(0, 2045) + "...";
         }
+        // If no Description is available, set it
         if (postDataDescription == "") {
             postDataDescription = "No Description available";
         }
         postDataDescription = decode(postDataDescription);
+        // Get and check Thumbnail
         let postDataThumbnail = post.data.thumbnail;
         if (postDataThumbnail == "default" || postDataThumbnail == "self" || postDataThumbnail == "nsfw") {
             postDataThumbnail = Embed.Thumbnail_Default;
@@ -74,10 +76,13 @@ async function getPostsData(allPosts) {
         let postDataCommentCount = post.data.num_comments;
         let postDataScore = post.data.score;
         let postDataUrl = post.data.url;
+        // Check if it is a Giveaway and if so don't send it
+        if (postDataUrl.toLowerCase().includes("gleam.io"))
+            return;
         let postDataId = post.data.id;
         let subreddit = post.data.subreddit;
+        // Check for Launcher
         let postDataLauncher = post.data.title.match(/^\[([a-zA-Z0-9 \.]+)(?:[\/, ]*[a-zA-Z0-9\. ]*)*\]+.*$/mi);
-        // Why is postDataLauncher an object and not an array?
         if (typeof postDataLauncher === 'object' && postDataLauncher.length > 1) {
             postDataLauncher = postDataLauncher[1]
         } else {
@@ -132,26 +137,26 @@ async function sendNotification(posts) {
             .setTitle(`${postInfo.Title}`)
             .setDescription(`${postInfo.Description}`)
             .setFields(
-            {
-                name: "Comments",
-                value: `${postInfo.CommentCount}`,
-                inline: true 
-            },
-            {
-                name: "Upvote Ratio",
-                value: `${postInfo.Upvotes}`,
-                inline: true 
-            },
-            {
-                name: "Score",
-                value: `${postInfo.Score}`,
-                inline: true 
-            },
-            {
-                name: "Free Game Link",
-                value: `[Click me](${postInfo.URL})`,
-                inline: false 
-            })
+                {
+                    name: "Comments",
+                    value: `${postInfo.CommentCount}`,
+                    inline: true
+                },
+                {
+                    name: "Upvote Ratio",
+                    value: `${postInfo.Upvotes}`,
+                    inline: true
+                },
+                {
+                    name: "Score",
+                    value: `${postInfo.Score}`,
+                    inline: true
+                },
+                {
+                    name: "Free Game Link",
+                    value: `[Click me](${postInfo.URL})`,
+                    inline: false
+                })
             .setThumbnail(postInfo.Thumbnail)
             .setURL(postInfo.URL)
             .setColor(embedColor)
@@ -220,6 +225,6 @@ function insertClient(client2) {
 }
 
 // Create schedule for checking reddit
-setInterval(checkReddit, lookuptime);
+setInterval(checkReddit, lookuptime*60000);
 
 module.exports = { checkReddit, insertClient };
