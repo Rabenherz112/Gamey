@@ -78,7 +78,7 @@ async function getPostsData(allPosts) {
         let postDataUrl = post.data.url;
         // Check if it is a Giveaway and if so don't send it
         if (postDataUrl.toLowerCase().includes("gleam.io"))
-            return;
+            continue;
         let postDataId = post.data.id;
         let subreddit = post.data.subreddit;
         // Check for Launcher
