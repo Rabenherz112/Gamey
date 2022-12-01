@@ -1,4 +1,4 @@
-![](https://media.discordapp.net/attachments/731166978806644827/1047599468918353920/Gamey_BannerCatcher.png)
+![](https://media.discordapp.net/attachments/731166978806644827/1047929202474745887/Gamey_BannerWithCentralLogo.png)
 # 🤖 Gamey (Discord Free Game finder)
 > Gamey is a Bot that finds new free Games and sends them to your Discord group. It is written in discord.js and created by the Ravenhub Development Team
 
