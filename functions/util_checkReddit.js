@@ -128,6 +128,9 @@ async function sendNotification(posts) {
             case "epic games":
                 embedColor = colors.Epic
                 break;
+            case "gog":
+                embedColor = colors.GOG
+                break;
             case "itch.io":
                 embedColor = colors.Itch
                 break;
