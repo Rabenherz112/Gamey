@@ -18,9 +18,11 @@ module.exports = {
         if (!dbGuild) {
           await db.set(
             `${guild}`,
-            { feedChannel: null,
-            feedChannelType: null,
-            feedRole: null }
+            {
+              feedChannel: null,
+              feedChannelType: null,
+              feedRole: null
+            }
           );
         }
       }
@@ -39,9 +41,11 @@ module.exports = {
       if (!dbGuild) {
         await db.set(
           `${guild.id}`,
-          { feedChannel: null,
-          feedChannelType: null,
-          feedRole: null }
+          {
+            feedChannel: null,
+            feedChannelType: null,
+            feedRole: null
+          }
         );
       }
     });
@@ -84,7 +88,10 @@ module.exports = {
         console.error(error);
       }
     })();
-
+    // Set Bot Status to "Watching /help | Server Count"
+    client.user.setActivity(`/help | ${client.guilds.cache.size} servers`, {
+      type: "WATCHING",
+    });
     // Start checking Reddit
     let util_checkreddit = require("../../functions/util_checkReddit");
     util_checkreddit.insertClient(client);

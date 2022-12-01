@@ -125,7 +125,11 @@ async function sendNotification(posts) {
                 embedColor = colors.Steam
                 break;
             case "epic":
+            case "epic games":
                 embedColor = colors.Epic
+                break;
+            case "gog":
+                embedColor = colors.GOG
                 break;
             case "itch.io":
                 embedColor = colors.Itch
@@ -142,7 +146,7 @@ async function sendNotification(posts) {
             .setDescription(`${postInfo.Description}`)
             .setFields(
                 {
-                    name: "Date (UTC)",
+                    name: "Date",
                     value: `<t:${postInfo.CreationTime}:f>`,
                     inline: true
                 },
