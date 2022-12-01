@@ -146,7 +146,7 @@ async function sendNotification(posts) {
             .setDescription(`${postInfo.Description}`)
             .setFields(
                 {
-                    name: "Date (UTC)",
+                    name: "Date",
                     value: `<t:${postInfo.CreationTime}:f>`,
                     inline: true
                 },
