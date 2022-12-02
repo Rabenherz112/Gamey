@@ -2,6 +2,7 @@
     "slashCommandsGlobal": true,
     "guildIDDev" : 843924725931049000,
     "subreddits": ["FreeGameFindings","Freegamestuff"],
+    "blacklistedURLs": ["gleam.io","givee.club"],
 
     "lookuptime": "30",
     "limit" : "7",
