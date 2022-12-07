@@ -1,9 +1,15 @@
-const { subreddits, lookuptime, limit, Embed, colors } = require("../config.json");
+const { subreddits, lookuptime, limit, Embed, colors, blacklistedURLs, blacklistedUsers } = require("../config.json");
 const { EmbedBuilder } = require("discord.js");
 const { ChannelType } = require("discord-api-types/v10");
 const { decode } = require("html-entities");
 
 async function getSubredditData() {
+    // Health Check
+    let response = await fetch("https://www.reddit.com/");
+    if (response.status !== 200) {
+        console.log(`[REDDIT] Reddit is currently down, trying again in ${lookuptime} minutes`);
+        return;
+    }
     // Get all new Posts from Subreddits
     let allPosts = [];
     for (let subreddit of subreddits) {
@@ -78,9 +84,24 @@ async function getPostsData(allPosts) {
         let postDataUrl = post.data.url;
         let postDataUrlPost = `https://www.reddit.com${post.data.permalink}`;
         let postDataCreationTime = Math.floor(post.data.created_utc);
-        // Check if it is a Giveaway and if so don't send it
-        if (postDataUrl.toLowerCase().includes("gleam.io"))
+        // Check if postDataUrl is included in blacklistedURLs
+        let blacklisted = false;
+        for (let url of blacklistedURLs) {
+            if (postDataUrl.toLowerCase().includes(url)) {
+                blacklisted = true;
+                break;
+            }
+        }
+        // Check if postDataAuthor is a  blacklistedUsers
+        for(let buser of blacklistedUsers) {
+            if (postDataAuthor.toLowerCase() == (buser)) {
+                blacklisted = true;
+                break;
+            }
+        }
+        if (blacklisted) {
             continue;
+        }
         let postDataId = post.data.id;
         let subreddit = post.data.subreddit;
         // Check for Launcher
@@ -180,7 +201,7 @@ async function sendNotification(posts) {
             })
             .setFooter({
                 text: Embed.Footer,
-                iconURL: Embed.Footer_Image
+                iconURL: Embed.Footer_Icon
             })
             .setTimestamp()
 
