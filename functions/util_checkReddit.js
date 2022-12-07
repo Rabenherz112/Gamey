@@ -1,4 +1,4 @@
-const { subreddits, lookuptime, limit, Embed, colors, blacklistedURLs } = require("../config.json");
+const { subreddits, lookuptime, limit, Embed, colors, blacklistedURLs, blacklistedUsers } = require("../config.json");
 const { EmbedBuilder } = require("discord.js");
 const { ChannelType } = require("discord-api-types/v10");
 const { decode } = require("html-entities");
@@ -82,6 +82,13 @@ async function getPostsData(allPosts) {
         let blacklisted = false;
         for (let url of blacklistedURLs) {
             if (postDataUrl.toLowerCase().includes(url)) {
+                blacklisted = true;
+                break;
+            }
+        }
+        // Check if postDataAuthor is a  blacklistedUsers
+        for(let buser of blacklistedUsers) {
+            if (postDataAuthor.toLowerCase() == (buser)) {
                 blacklisted = true;
                 break;
             }
