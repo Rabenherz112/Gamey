@@ -64,7 +64,7 @@ module.exports = {
       })
       .setFooter({
         text: Embed.Footer,
-        iconURL: Embed.Icon,
+        iconURL: Embed.Footer_Icon,
       });
     return interaction.reply({ embeds: [embed] });
   },

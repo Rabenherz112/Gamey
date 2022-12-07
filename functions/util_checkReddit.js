@@ -195,7 +195,7 @@ async function sendNotification(posts) {
             })
             .setFooter({
                 text: Embed.Footer,
-                iconURL: Embed.Footer_Image
+                iconURL: Embed.Footer_Icon
             })
             .setTimestamp()
 
