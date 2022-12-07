@@ -4,6 +4,12 @@ const { ChannelType } = require("discord-api-types/v10");
 const { decode } = require("html-entities");
 
 async function getSubredditData() {
+    // Health Check
+    let response = await fetch("https://www.reddit.com/");
+    if (response.status !== 200) {
+        console.log(`[REDDIT] Reddit is currently down, trying again in ${lookuptime} minutes`);
+        return;
+    }
     // Get all new Posts from Subreddits
     let allPosts = [];
     for (let subreddit of subreddits) {
