@@ -29,6 +29,6 @@
     "discord.js": "^14.7.1",
     "fs": "^0.0.1-security",
     "html-entities": "^2.3.3",
-    "quick.db": "^9.0.6"
+    "quick.db": "^9.0.7"
   }
 }
