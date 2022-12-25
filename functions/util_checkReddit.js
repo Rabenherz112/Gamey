@@ -102,8 +102,17 @@ async function getPostsData(allPosts) {
         if (blacklisted) {
             continue;
         }
-        let postDataId = post.data.id;
-        let subreddit = post.data.subreddit;
+        // Put the 3 latest Post Titles into the subreddit DB
+        await client.db.push(`${post.data.subreddit}.latestPosts`, postDataTitel.toLowerCase());
+        let latestPosts = await client.db.get(`${post.data.subreddit}.latestPosts`);
+        if (latestPosts.length > 3) {
+            await client.db.shift(`${post.data.subreddit}.latestPosts`);
+        }
+        // Check if current Post Data Title is already in the DB
+        latestPosts = await client.db.get(`${post.data.subreddit}.latestPost`);
+        if (latestPosts.includes(postDataTitel.toLowerCase())) {
+            continue;
+        }
         // Check for Launcher
         let postDataLauncher = post.data.title.match(/^\[([a-zA-Z0-9 \.]+)(?:[\/, ]*[a-zA-Z0-9\. ]*)*\]+.*$/mi);
         if (postDataLauncher != null && typeof postDataLauncher === 'object' && postDataLauncher.length > 1) {
