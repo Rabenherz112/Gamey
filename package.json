@@ -1,6 +1,6 @@
 {
   "name": "discord-bot-free-games-finder",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Find your free Games and let them send you to Discord",
   "main": "index.js",
   "scripts": {
