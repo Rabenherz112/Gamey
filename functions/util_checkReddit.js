@@ -93,7 +93,7 @@ async function getPostsData(allPosts) {
             }
         }
         // Check if postDataAuthor is a  blacklistedUsers
-        for(let buser of blacklistedUsers) {
+        for (let buser of blacklistedUsers) {
             if (postDataAuthor.toLowerCase() == (buser)) {
                 blacklisted = true;
                 break;
@@ -102,16 +102,22 @@ async function getPostsData(allPosts) {
         if (blacklisted) {
             continue;
         }
-        // Put the 3 latest Post Titles into the subreddit DB
-        await client.db.push(`${post.data.subreddit}.latestPosts`, postDataTitel.toLowerCase());
+        // Check if Post is a duplicate
         let latestPosts = await client.db.get(`${post.data.subreddit}.latestPosts`);
-        if (latestPosts.length > 3) {
-            await client.db.shift(`${post.data.subreddit}.latestPosts`);
+        if (latestPosts != null) {
+            for (let i = latestPosts.length; i >= 0; i--) {
+                if (latestPosts[i] == postDataTitel.toLowerCase()) {
+                    console.log(`[REDDIT] Found ${postDataTitel} at ${new Date().toLocaleString()}, however it is a duplicate. Skipping...`);
+                    continue;
+                }
+            }
         }
-        // Check if current Post Data Title is already in the DB
-        latestPosts = await client.db.get(`${post.data.subreddit}.latestPost`);
-        if (latestPosts.includes(postDataTitel.toLowerCase())) {
-            continue;
+        // Put the latest Post Titles into the subreddit DB
+        await client.db.push(`${post.data.subreddit}.latestPosts`, postDataTitel.toLowerCase());
+        latestPosts = await client.db.get(`${post.data.subreddit}.latestPosts`);
+        if (latestPosts.length > 12) {
+            // Remove the oldest Post Title from the subreddit DB
+            await client.db.pull(`${post.data.subreddit}.latestPosts`, latestPosts[0]);
         }
         // Check for Launcher
         let postDataLauncher = post.data.title.match(/^\[([a-zA-Z0-9 \.]+)(?:[\/, ]*[a-zA-Z0-9\. ]*)*\]+.*$/mi);
