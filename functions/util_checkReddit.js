@@ -8,7 +8,6 @@ async function getSubredditData() {
     let response = await fetch("https://www.reddit.com/");
     if (response.status !== 200) {
         console.log(`[REDDIT] Reddit is currently down, trying again in ${lookuptime} minutes`);
-        return;
     }
     // Get all new Posts from Subreddits
     let allPosts = [];
