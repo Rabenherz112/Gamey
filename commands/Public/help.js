@@ -46,6 +46,11 @@ module.exports = {
     }
     let releaseLink = release.data.html_url;
     let releaseName = release.data.name;
+    // Check which version is used locally
+    let localVersion = require("../../package.json").version;
+    if (version != "v"+localVersion) {
+      version = `${version} (Local: ${localVersion})`;
+    }
     // Create Embed
     let embed = new EmbedBuilder()
       .setTitle(`Gamey ${version} - Your free Game Finder`)
