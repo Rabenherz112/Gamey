@@ -1,4 +1,4 @@
-const { subreddits, lookuptime, limit, Embed, colors, blacklistedURLs, blacklistedUsers } = require("../config.json");
+const { subreddits, lookuptime, limit, Embed, colors, blacklistedURLs, blacklistedUsers, dublicateCheck, dublicateCheckCrossSubreddits } = require("../config.json");
 const { EmbedBuilder } = require("discord.js");
 const { ChannelType } = require("discord-api-types/v10");
 const { decode } = require("html-entities");
@@ -102,12 +102,25 @@ async function getPostsData(allPosts) {
             continue;
         }
         // Check if Post is a duplicate
-        let latestPosts = await client.db.get(`${post.data.subreddit}.latestPosts`);
-        if (latestPosts != null) {
-            for (let i = latestPosts.length; i >= 0; i--) {
-                if (latestPosts[i] == postDataTitel.toLowerCase()) {
-                    console.log(`[REDDIT] Found ${postDataTitel} at ${new Date().toLocaleString()}, however it is a duplicate. Skipping...`);
-                    continue;
+        if (dublicateCheck == true && dublicateCheckCrossSubreddits == false) {
+            let latestPosts = await client.db.get(`${post.data.subreddit}.latestPosts`);
+            if (latestPosts != null) {
+                for (let i = latestPosts.length; i >= 0; i--) {
+                    if (latestPosts[i] == postDataTitel.toLowerCase()) {
+                        console.log(`[REDDIT] Found ${postDataTitel} at ${new Date().toLocaleString()}, however it is a duplicate. Skipping...`);
+                        continue;
+                    }
+                }
+            }
+        }
+        if (dublicateCheck == true && dublicateCheckCrossSubreddits == true) {
+            let latestPosts = await client.db.get(`latestPosts`);
+            if (latestPosts != null) {
+                for (let i = latestPosts.length; i >= 0; i--) {
+                    if (latestPosts[i] == postDataTitel.toLowerCase()) {
+                        console.log(`[REDDIT] Found ${postDataTitel} at ${new Date().toLocaleString()}, however it is a duplicate. Skipping...`);
+                        continue;
+                    }
                 }
             }
         }
@@ -117,6 +130,12 @@ async function getPostsData(allPosts) {
         if (latestPosts.length > 12) {
             // Remove the oldest Post Title from the subreddit DB
             await client.db.pull(`${post.data.subreddit}.latestPosts`, latestPosts[0]);
+        }
+        await client.db.push(`latestPosts`, postDataTitel.toLowerCase());
+        latestPosts = await client.db.get(`latestPosts`);
+        if (latestPosts.length > 12) {
+            // Remove the oldest Post Title from the subreddit DB
+            await client.db.pull(`latestPosts`, latestPosts[0]);
         }
         // Check for Launcher
         let postDataLauncher = post.data.title.match(/^\[([a-zA-Z0-9 \.]+)(?:[\/, ]*[a-zA-Z0-9\. ]*)*\]+.*$/mi);
