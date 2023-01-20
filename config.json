@@ -2,9 +2,12 @@
     "slashCommandsGlobal": true,
     "guildIDDev" : 843924725931049000,
     "subreddits": ["FreeGameFindings","Freegamestuff"],
+    "dublicateCheck": true,
+    "dublicateCheckCrossSubreddits": true,
+    "_comment1": "For the dublicateCheckCrossSubreddits to work, you have to enable the dublicateCheck",
     
     "_comment": "Users and URLs need to be in lowercase and without the https:// or http://",
-    "blacklistedURLs": ["gleam.io","givee.club","key-hub.eu"],
+    "blacklistedURLs": ["gleam.io","givee.club","key-hub.eu","mmobomb.com"],
     "blacklistedUsers": ["automoderator"],
 
     "lookuptime": "30",
