@@ -127,7 +127,7 @@ async function getPostsData(allPosts) {
                             currentpost = currentpost.replace(/[^a-zA-Z]/g, "");
 
                             if (currentpost.indexOf(postDataTitel2.toLowerCase()) > -1 || postDataTitel2.toLowerCase().indexOf(currentpost) > -1) {
-                                console.log(`[DEBUG] [1] Possible duplicate ${postDataTitel2} at ${new Date().toLocaleString()} found.`);
+                                //console.log(`[DEBUG] [1] Possible duplicate ${postDataTitel2} at ${new Date().toLocaleString()} found.`);
                                 isPostDuplicate = true;
                             }
                             currentpost2 = currentpost2.toLowerCase().split(" ");
@@ -145,12 +145,12 @@ async function getPostsData(allPosts) {
                             currentpost3 = currentpost3.join("");
                             postDataTitle4 = postDataTitle4.join("");
                             if (currentpost3.indexOf(postDataTitle4) > -1 || postDataTitle4.indexOf(currentpost3) > -1) {
-                                console.log(`[DEBUG] [2] Found ${postDataTitel2} at ${new Date().toLocaleString()}, however it is a duplicate. Skipping...`);
+                                //console.log(`[DEBUG] [2] Found ${postDataTitel2} at ${new Date().toLocaleString()}, however it is a duplicate. Skipping...`);
                                 isPostDuplicate = true;
                             }
 
                             if (currentpost == postDataTitel2.toLowerCase()) {
-                                console.log(`[DEBUG] [3] Found ${postDataTitel2} at ${new Date().toLocaleString()}, however it is a duplicate. Skipping...`);
+                                //console.log(`[DEBUG] [3] Found ${postDataTitel2} at ${new Date().toLocaleString()}, however it is a duplicate. Skipping...`);
                                 isPostDuplicate = true;
                             }
                         } catch (error) {
