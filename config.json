@@ -4,6 +4,7 @@
     "subreddits": ["FreeGameFindings","Freegamestuff"],
     "dublicateCheck": true,
     "dublicateCheckCrossSubreddits": true,
+    "dublicateCheckIgnoreSpecialCharacters": true,
     "_comment1": "For the dublicateCheckCrossSubreddits to work, you have to enable the dublicateCheck",
     
     "_comment": "Users and URLs need to be in lowercase and without the https:// or http://",
@@ -13,11 +14,11 @@
     "lookuptime": "30",
     "limit" : "7",
     "colors" : {
-        "Epic" : "0x2b292a",
+        "Epic" : "0x2f2d2e",
         "Steam" : "0x021444",
-        "Itch" : "0f25756",
+        "Itch" : "0xf25756",
         "GOG" : "0x8200d7",
-        "Other" : "000bc22",
+        "Other" : "0xadd8e6",
         "Expired": "0x333333",
         "Embed_Default" : "0x9370DB",
         "Embed_Error" : "0xFF0000",
