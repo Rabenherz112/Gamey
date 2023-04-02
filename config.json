@@ -11,7 +11,7 @@
     "blacklistedURLs": ["gleam.io","givee.club","key-hub.eu","mmobomb.com"],
     "blacklistedUsers": ["automoderator"],
 
-    "lookuptime": "30",
+    "lookuptime": "60",
     "limit" : "7",
     "colors" : {
         "Epic" : "0x2f2d2e",

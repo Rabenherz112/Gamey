@@ -4,8 +4,20 @@ const { ChannelType } = require("discord-api-types/v10");
 const { decode } = require("html-entities");
 
 async function getSubredditData() {
+    // Generate User Agent for Reddit API
+    let headers = new Headers(
+        {
+            "User-Agent": `GameyBot/${Math.floor(Math.random() * 1000)}.0`,
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        }
+    );
+
     // Health Check
-    let response = await fetch("https://www.reddit.com/");
+    let response = await fetch("https://www.reddit.com/new.json", {
+        method: "GET",
+        headers: headers,
+    });
     if (response.status !== 200) {
         console.log(`[REDDIT] Reddit is currently down, trying again in ${lookuptime} minutes`);
     }
@@ -13,7 +25,11 @@ async function getSubredditData() {
     let allPosts = [];
     for (let subreddit of subreddits) {
         let response = await fetch(
-            `https://www.reddit.com/r/${subreddit}/new.json?limit=${limit}`
+            `https://www.reddit.com/r/${subreddit}/new.json?limit=${limit}`,
+            {
+                method: "GET",
+                headers: headers,
+            }
         );
         let json = await response.json();
         // Get the latest Post from DB and compare it to the latest Post from Reddit
@@ -33,7 +49,11 @@ async function getSubredditData() {
 
 async function getSubredditComments(subreddit, postDataId) {
     let response = await fetch(
-        `https://www.reddit.com/r/${subreddit}/comments/${postDataId}/best.json?limit=50`
+        `https://www.reddit.com/r/${subreddit}/comments/${postDataId}/best.json?limit=50`,
+        {
+            method: "GET",
+            headers: headers,
+        }
     );
     // Filter response for author FGF_Info_Bot
     let json = await response.json();
@@ -45,7 +65,11 @@ async function getSubredditComments(subreddit, postDataId) {
 
 async function getRedditUser(user) {
     let response = await fetch(
-        `https://www.reddit.com/user/${user}/about.json`
+        `https://www.reddit.com/user/${user}/about.json`,
+        {
+            method: "GET",
+            headers: headers,
+        }
     );
     let json = await response.json();
     let profilePicture = json.data.subreddit.icon_img;
