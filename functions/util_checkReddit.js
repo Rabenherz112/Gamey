@@ -3,16 +3,14 @@ const { EmbedBuilder } = require("discord.js");
 const { ChannelType } = require("discord-api-types/v10");
 const { decode } = require("html-entities");
 
-async function getSubredditData() {
-    // Generate User Agent for Reddit API
-    let headers = new Headers(
-        {
-            "User-Agent": `GameyBot/${Math.floor(Math.random() * 1000)}.0`,
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        }
-    );
+// Generate User Agent for Reddit API
+let headers = new Headers({
+    "User-Agent": `GameyBot/${Math.floor(Math.random() * 1000)}.0`,
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+});
 
+async function getSubredditData() {
     // Health Check
     let response = await fetch("https://www.reddit.com/new.json", {
         method: "GET",
