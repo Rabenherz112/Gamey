@@ -1,4 +1,4 @@
-const { subreddits, lookuptime, limit, Embed, colors, blacklistedURLs, blacklistedUsers, dublicateCheck, dublicateCheckCrossSubreddits } = require("../config.json");
+const { subreddits, lookuptime, limit, Embed, colors, blacklistedURLs, blacklistedUsers, dublicateCheck, dublicateCheckCrossSubreddits, dublicateCheckIgnoreSpecialCharacters } = require("../config.json");
 const { EmbedBuilder } = require("discord.js");
 const { ChannelType } = require("discord-api-types/v10");
 const { decode } = require("html-entities");
@@ -102,6 +102,77 @@ async function getPostsData(allPosts) {
             continue;
         }
         // Check if Post is a duplicate
+        if (dublicateCheck == true) {
+            let isPostDuplicate = false;
+            let latestPosts = null;
+            if (dublicateCheckCrossSubreddits == true) {
+                latestPosts = await client.db.get(`latestPosts`);
+            } else {
+                latestPosts = await client.db.get(`${post.data.subreddit}.latestPosts`);
+            }
+            if (latestPosts != null) {
+                if (dublicateCheckIgnoreSpecialCharacters == true) {
+                    let postDataTitel2 = undefined;
+                    try {
+                        postDataTitel2 = postDataTitel.replace(/[^a-zA-Z]/g, "");
+                    } catch (error) { }
+                    for (let i = latestPosts.length; i >= 0; i--) {
+                        let currentpost = latestPosts[i];
+                        if (currentpost === undefined || postDataTitel2 === undefined) {
+                            continue;
+                        }
+                        //console.log("[DEBUG] " + currentpost + " | " + postDataTitel2)
+                        try {
+                            let currentpost2 = currentpost;
+                            currentpost = currentpost.replace(/[^a-zA-Z]/g, "");
+
+                            if (currentpost.indexOf(postDataTitel2.toLowerCase()) > -1 || postDataTitel2.toLowerCase().indexOf(currentpost) > -1) {
+                                console.log(`[DEBUG] [1] Possible duplicate ${postDataTitel2} at ${new Date().toLocaleString()} found.`);
+                                isPostDuplicate = true;
+                            }
+                            currentpost2 = currentpost2.toLowerCase().split(" ");
+                            let currentpost3 = [];
+                            let postDataTitel3 = postDataTitel2.toLowerCase().split(" ");
+                            let postDataTitle4 = [];
+                            for (let i = 0; i < currentpost2.length; i++) {
+                                if (currentpost2[i].endsWith(")") || currentpost2[i].endsWith("]")) continue;
+                                currentpost3.push(currentpost2[i]);
+                            }
+                            for (let i = 0; i < postDataTitel3.length; i++) {
+                                if (postDataTitel3[i].endsWith(")") || postDataTitel3[i].endsWith("]")) continue;
+                                postDataTitle4.push(postDataTitel3[i]);
+                            }
+                            currentpost3 = currentpost3.join("");
+                            postDataTitle4 = postDataTitle4.join("");
+                            if (currentpost3.indexOf(postDataTitle4) > -1 || postDataTitle4.indexOf(currentpost3) > -1) {
+                                console.log(`[DEBUG] [2] Found ${postDataTitel2} at ${new Date().toLocaleString()}, however it is a duplicate. Skipping...`);
+                                isPostDuplicate = true;
+                            }
+
+                            if (currentpost == postDataTitel2.toLowerCase()) {
+                                console.log(`[DEBUG] [3] Found ${postDataTitel2} at ${new Date().toLocaleString()}, however it is a duplicate. Skipping...`);
+                                isPostDuplicate = true;
+                            }
+                        } catch (error) {
+                            console.log(`[DEBUG] Error in testing duplicate check: ${error}`);
+                        }
+                    }
+                    // asd
+                } else {
+                    for (let i = latestPosts.length; i >= 0; i--) {
+                        if (latestPosts[i] == postDataTitel2.toLowerCase()) {
+                            console.log(`[REDDIT] Found ${postDataTitel2} at ${new Date().toLocaleString()}, however it is a duplicate. Skipping...`);
+                            isPostDuplicate = true;
+                        }
+                    }
+                }
+            }
+            if (isPostDuplicate) {
+                console.log(`[REDDIT] Skipping "${postDataTitel}", since it is a duplicate.`);
+                continue;
+            }
+        }
+        /* OLD DUPLICATE CHECK
         if (dublicateCheck == true && dublicateCheckCrossSubreddits == false) {
             let latestPosts = await client.db.get(`${post.data.subreddit}.latestPosts`);
             if (latestPosts != null) {
@@ -124,16 +195,17 @@ async function getPostsData(allPosts) {
                 }
             }
         }
+        */
         // Put the latest Post Titles into the subreddit DB
         await client.db.push(`${post.data.subreddit}.latestPosts`, postDataTitel.toLowerCase());
         latestPosts = await client.db.get(`${post.data.subreddit}.latestPosts`);
-        if (latestPosts.length > 12) {
+        if (latestPosts.length > 16) {
             // Remove the oldest Post Title from the subreddit DB
             await client.db.pull(`${post.data.subreddit}.latestPosts`, latestPosts[0]);
         }
         await client.db.push(`latestPosts`, postDataTitel.toLowerCase());
         latestPosts = await client.db.get(`latestPosts`);
-        if (latestPosts.length > 12) {
+        if (latestPosts.length > 16) {
             // Remove the oldest Post Title from the subreddit DB
             await client.db.pull(`latestPosts`, latestPosts[0]);
         }
@@ -195,6 +267,7 @@ async function sendNotification(posts) {
                 platform = "Unknown"
                 break;
         }
+        embedColor = Number(embedColor);
         let embed = new EmbedBuilder()
             .setTitle(`${postInfo.Title}`)
             .setDescription(`${postInfo.Description}`)
