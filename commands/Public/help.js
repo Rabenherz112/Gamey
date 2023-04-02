@@ -48,7 +48,7 @@ module.exports = {
     let releaseName = release.data.name;
     // Check which version is used locally
     let localVersion = require("../../package.json").version;
-    if (version != "v"+localVersion) {
+    if (version != "v" + localVersion) {
       version = `${version} (Local: ${localVersion})`;
     }
     // Create Embed
@@ -81,7 +81,7 @@ module.exports = {
           inline: true
         }
       )
-      .setColor(colors.Embed_Info)
+      .setColor(Number(colors.Embed_Info))
       .setTimestamp()
       .setAuthor({
         name: interaction.user.username,

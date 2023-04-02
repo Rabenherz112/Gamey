@@ -56,7 +56,7 @@ module.exports = {
       .setDescription(
         `New Free Games will be posted in ${channel}.\nYou can change the channe again with \`/set-channel\``
       )
-      .setColor(colors.Embed_Success)
+      .setColor(Number(colors.Embed_Success))
       .setTimestamp()
       .setAuthor({
         name: interaction.user.username,

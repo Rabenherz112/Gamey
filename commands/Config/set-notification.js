@@ -31,20 +31,20 @@ module.exports = {
     );
     // Check if Role is null if so show the currently set role
     if (role === null) {
-        let dbRole = dbGuild.feedRole;
-        // FIXME
-        if (dbRole === null) {
-          return interaction.reply({
-            content: "There is no notifcation role set yet.",
-            ephemeral: true,
-          });
-        }
-        let role = interaction.guild.roles.cache.get(dbRole);
+      let dbRole = dbGuild.feedRole;
+      // FIXME
+      if (dbRole === null) {
         return interaction.reply({
-          content: `The current notification role is ${role}.`,
+          content: "There is no notifcation role set yet.",
           ephemeral: true,
         });
       }
+      let role = interaction.guild.roles.cache.get(dbRole);
+      return interaction.reply({
+        content: `The current notification role is ${role}.`,
+        ephemeral: true,
+      });
+    }
     // Set the Role in the Database
     dbGuild.feedRole = role.id;
     await client.db.set(`${interaction.guild.id}`, dbGuild);
@@ -54,7 +54,7 @@ module.exports = {
       .setDescription(
         `${role} will now be notified, as soon as I find a new Free Game.\nYou can change the role again with \`/set-notification\``
       )
-      .setColor(colors.Embed_Success)
+      .setColor(Number(colors.Embed_Success))
       .setTimestamp()
       .setAuthor({
         name: interaction.user.username,
