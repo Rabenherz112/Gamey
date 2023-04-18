@@ -8,7 +8,7 @@
     "_comment1": "For the dublicateCheckCrossSubreddits to work, you have to enable the dublicateCheck",
     
     "_comment": "Users and URLs need to be in lowercase and without the https:// or http://",
-    "blacklistedURLs": ["gleam.io","givee.club","key-hub.eu","mmobomb.com"],
+    "blacklistedURLs": ["gleam.io","givee.club","key-hub.eu","mmobomb.com","giveaways.joinsurf.com"],
     "blacklistedUsers": ["automoderator"],
 
     "lookuptime": "60",
