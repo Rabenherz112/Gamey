@@ -31,6 +31,6 @@
     "fs": "^0.0.1-security",
     "html-entities": "^2.3.3",
     "install": "^0.13.0",
-    "quick.db": "^9.1.5"
+    "quick.db": "^9.1.6"
   }
 }
