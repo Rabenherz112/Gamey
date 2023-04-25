@@ -35,6 +35,6 @@ The `config.json` file does not need to be adjusted. However, you can of course 
 The last step of the configuration can be done in Discord itself. Use the `set-channel` command to set the channel where the bot is supposed to notify you about the newest free games.
 
 ## 🕒 Wait for the next free Game
-Now you only have to wait. The Bot will check Reddit every 5 minutes for new posts about a free games (if you didn't change the config.json). Onces found it will post it in your Discord channel. The notification you recieve will looks something like this:
+Now you only have to wait. The Bot will check Reddit every hour for new posts about a free games (if you didn't change the config.json). Onces found it will post it in your Discord channel. The notification you recieve will looks something like this:
 
 ![](https://image.ravshort.com/29xipq8v.png)
