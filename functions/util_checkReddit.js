@@ -18,6 +18,7 @@ async function getSubredditData() {
     });
     if (response.status !== 200) {
         console.log(`[REDDIT] Reddit is currently down, trying again in ${lookuptime} minutes`);
+        return null;
     }
     // Get all new Posts from Subreddits
     let allPosts = [];
@@ -377,9 +378,10 @@ async function checkReddit() {
         return;
     // Get Subreddit Data
     let posts = await getSubredditData();
+    if(posts === null) return;
     // Send Notification
     await sendNotification(posts);
-    return
+    return;
 }
 let client = null;
 function insertClient(client2) {
