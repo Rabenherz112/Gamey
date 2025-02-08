@@ -25,7 +25,7 @@
   "homepage": "https://github.com/Rabenherz112/Discord-Bot-Free-Games-Finder#readme",
   "dependencies": {
     "@octokit/rest": "^19.0.13",
-    "better-sqlite3": "^8.7.0",
+    "better-sqlite3": "^11.8.1",
     "discord-api-types": "^0.37.119",
     "discord.js": "^14.14.0",
     "fs": "^0.0.1-security",
