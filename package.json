@@ -27,7 +27,7 @@
     "@octokit/rest": "^19.0.13",
     "better-sqlite3": "^8.7.0",
     "discord-api-types": "^0.37.119",
-    "discord.js": "^14.14.0",
+    "discord.js": "^14.17.3",
     "fs": "^0.0.1-security",
     "html-entities": "^2.5.2",
     "install": "^0.13.0",
